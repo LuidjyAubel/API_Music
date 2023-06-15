@@ -7,5 +7,6 @@ data class Member(
     @Id
     var Id : String,
     var FirstName : String,
-    var LastName : String
+    var LastName : String,
+    var NickName : String? = null
 )

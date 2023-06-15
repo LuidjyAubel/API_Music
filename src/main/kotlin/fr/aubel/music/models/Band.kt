@@ -7,6 +7,11 @@ data class Band(
     @Id
     var Id : String,
     var Name : String,
-    @OneToMany(mappedBy="Id" )
-    val Members : MutableList<Member> = mutableListOf()
+    @ManyToMany(cascade = [CascadeType.ALL])
+    @JoinTable(
+        name = "band_member",
+        joinColumns = [JoinColumn(name = "band_id")],
+        inverseJoinColumns = [JoinColumn(name = "member_id")]
+    )
+    val members: MutableList<Member> = mutableListOf()
 )
