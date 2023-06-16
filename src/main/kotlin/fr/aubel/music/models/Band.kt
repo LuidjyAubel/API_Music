@@ -7,7 +7,7 @@ data class Band(
     @Id
     var Id : String,
     var Name : String,
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
     @JoinTable(
         name = "band_member",
         joinColumns = [JoinColumn(name = "band_id")],
