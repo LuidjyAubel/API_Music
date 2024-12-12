@@ -1,8 +1,9 @@
-package fr.aubel.music.web
+package fr.aubel.metallium.Web
 
-import fr.aubel.music.dao.AlbumDao
-import fr.aubel.music.models.Album
-import fr.aubel.music.models.Genre
+
+import fr.aubel.metallium.Dao.VersionDao
+import fr.aubel.metallium.Model.Groupe
+import fr.aubel.metallium.Model.Version
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -15,31 +16,31 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
-@RequestMapping("/album")
-class AlbumController {
+@RequestMapping("/api/version")
+class VersionController {
     @Autowired
-    private lateinit var albumDao : AlbumDao
+    private lateinit var versionDao: VersionDao
 
-    @Operation(summary = "Method get all album")
+    @Operation(summary = "Method get all version")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",
             content = [
                 Content(mediaType = "application/json",
-                    schema = Schema(implementation = Album::class)
+                    schema = Schema(implementation = Version::class)
                 )
             ])
     )
     @GetMapping
-    fun index(): List<Album> = albumDao.findAll()
+    fun index() : List<Version> = versionDao.findAll()
 
-    @Operation(summary = "Method get an album with the id")
+    @Operation(summary = "Method get an version with the id")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",
             content = [
                 Content(mediaType = "application/json",
-                    schema = Schema(implementation = Album::class)
+                    schema = Schema(implementation = Version::class)
                 )
             ]),
         ApiResponse(responseCode = "404",
@@ -47,26 +48,26 @@ class AlbumController {
             content = [
                 Content(mediaType = "application/json",
                     schema = Schema(type = "object",
-                        example = "{\"album\":\"not found\"}" )
+                        example = "{\"version\":\"not found\"}" )
                 )])
     )
     @GetMapping("/{id}")
     fun index(@PathVariable id: String): ResponseEntity<Any> {
-        val resAlbum = albumDao.findById(id)
-        return if (resAlbum == null) {
-            ResponseEntity(hashMapOf(Pair("formation", "not found")), HttpStatus.NOT_FOUND)
+        val resVersion = versionDao.findById(id)
+        return if (resVersion == null) {
+            ResponseEntity(hashMapOf(Pair("version", "not found")), HttpStatus.NOT_FOUND)
         } else {
-            ResponseEntity.ok(resAlbum)
+            ResponseEntity.ok(resVersion)
         }
     }
 
-    @Operation(summary = "Method for creating an album")
+    @Operation(summary = "Method for creating a version")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",
             content = [
                 Content(mediaType = "application/json",
-                    schema = Schema(implementation = Album::class)
+                    schema = Schema(implementation = Version::class)
                 )
             ]),
         ApiResponse(responseCode = "400",
@@ -74,46 +75,45 @@ class AlbumController {
             content = [
                 Content(mediaType = "application/json",
                     schema = Schema(type = "object",
-                        example = "{\"album\":\"bad request\"}" )
+                        example = "{\"version\":\"bad request\"}" )
                 )]),
         ApiResponse(responseCode = "304",
             description = "Not Modified",
             content = [
                 Content(mediaType = "application/json",
                     schema = Schema(type = "object",
-                        example = "{\"album\":\"not created\"}" )
+                        example = "{\"version\":\"not created\"}" )
                 )]),
         ApiResponse(responseCode = "404",
             description = "Not Found",
             content = [
                 Content(mediaType = "application/json",
                     schema = Schema(type = "object",
-                        example = "{\"album\":\"not found\"}" )
+                        example = "{\"version\":\"not found\"}" )
                 )])
     )
     @PostMapping
-    fun post(@RequestBody(required = false) p: Album?) : ResponseEntity<Any> {
+    fun post(@RequestBody(required = false) p: Version?) : ResponseEntity<Any> {
         if (p== null)
-            return  ResponseEntity(hashMapOf<String,String>(Pair("album","bad request")), HttpStatus.BAD_REQUEST)
+            return  ResponseEntity(hashMapOf<String,String>(Pair("version","bad request")), HttpStatus.BAD_REQUEST)
         try {
-            albumDao.save(p)
+            versionDao.save(p)
         } catch (e : Exception) {
-            return ResponseEntity(hashMapOf<String,String>(Pair("album","not created")), HttpStatus.NOT_MODIFIED)
+            return ResponseEntity(hashMapOf<String,String>(Pair("version","not created")), HttpStatus.NOT_MODIFIED)
         }
-
-        var resAlbum = p.Id?.let { albumDao.findById(it) }
-        if (resAlbum==null)
-            return ResponseEntity(hashMapOf<String,String>(Pair("album","not found")), HttpStatus.NOT_FOUND)
-        return ResponseEntity.ok(resAlbum)
+        var resVersion = p.id?.let { versionDao.findById(it) }
+        if (resVersion==null)
+            return ResponseEntity(hashMapOf<String,String>(Pair("version","not found")), HttpStatus.NOT_FOUND)
+        return ResponseEntity.ok(resVersion)
     }
 
-    @Operation(summary = "Method update an album with his id")
+    @Operation(summary = "Method update an version with his id")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",
             content = [
                 Content(mediaType = "application/json",
-                    schema = Schema(implementation = Album::class)
+                    schema = Schema(implementation = Version::class)
                 )
             ]),
         ApiResponse(responseCode = "404",
@@ -121,28 +121,28 @@ class AlbumController {
             content = [
                 Content(mediaType = "application/json",
                     schema = Schema(type = "object",
-                        example = "{\"album\":\"not found\"}" )
+                        example = "{\"version\":\"not found\"}" )
                 )])
     )
     @PutMapping("/{id}")
-    fun update(@PathVariable id: String,@RequestBody data:Album): ResponseEntity<Any>{
+    fun update(@PathVariable id: String,@RequestBody data:Version): ResponseEntity<Any>{
 
-        var resAlbum = albumDao.findById(id)
-        if (resAlbum.isEmpty)
-            return ResponseEntity(hashMapOf<String,String>(Pair("album","not found")), HttpStatus.NOT_FOUND)
-        resAlbum = Optional.of(data)
-        albumDao.save(resAlbum.get())
+        var resVersion = versionDao.findById(id)
+        if (resVersion.isEmpty)
+            return ResponseEntity(hashMapOf<String,String>(Pair("version","not found")), HttpStatus.NOT_FOUND)
+        resVersion = Optional.of(data)
+        versionDao.save(resVersion.get())
 
         return ResponseEntity.ok(data)
     }
 
-    @Operation(summary = "Method delete an album with his id")
+    @Operation(summary = "Method delete a version with his id")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",
             content = [
                 Content(mediaType = "application/json",
-                    schema = Schema(implementation = Album::class)
+                    schema = Schema(implementation = Version::class)
                 )
             ]),
         ApiResponse(responseCode = "404",
@@ -150,15 +150,15 @@ class AlbumController {
             content = [
                 Content(mediaType = "application/json",
                     schema = Schema(type = "object",
-                        example = "{\"album\":\"not found\"}" )
+                        example = "{\"version\":\"not found\"}" )
                 )])
     )
     @DeleteMapping(value = ["/{id}"])
     fun delete(@PathVariable id: String):ResponseEntity<Any> {
-        var resAlbum = albumDao.findById(id)
-        if (resAlbum.isEmpty)
-            return ResponseEntity(hashMapOf<String,String>(Pair("album","not found")), HttpStatus.NOT_FOUND)
-        albumDao.deleteById(id)
-        return ResponseEntity.ok(resAlbum)
+        var resultatversion = versionDao.findById(id)
+        if (resultatversion.isEmpty)
+            return ResponseEntity(hashMapOf<String,String>(Pair("version","not found")), HttpStatus.NOT_FOUND)
+        versionDao.deleteById(id)
+        return ResponseEntity.ok(resultatversion)
     }
 }

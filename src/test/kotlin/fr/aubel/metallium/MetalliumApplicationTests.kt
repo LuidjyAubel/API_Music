@@ -1,13 +1,13 @@
-package fr.aubel.music
+package fr.aubel.metallium
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class MusicApiApplicationTests {
+class MetalliumApplicationTests {
 
-    @Test
-    fun contextLoads() {
-    }
+	@Test
+	fun contextLoads() {
+	}
 
 }

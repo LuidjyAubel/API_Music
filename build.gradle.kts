@@ -1,49 +1,54 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    war
-    id("org.springframework.boot") version "2.7.5"
-    id("io.spring.dependency-management") version "1.0.15.RELEASE"
-    kotlin("jvm") version "1.6.21"
-    kotlin("plugin.spring") version "1.6.21"
-    kotlin("plugin.jpa") version "1.6.21"
+	kotlin("jvm") version "1.9.25"
+	kotlin("plugin.spring") version "1.9.25"
+	war
+	id("org.springframework.boot") version "3.4.0"
+	id("io.spring.dependency-management") version "1.1.6"
+	kotlin("plugin.jpa") version "1.9.25"
 }
 
 group = "fr.aubel"
 version = "0.0.1-SNAPSHOT"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
 }
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 dependencies {
-    implementation("org.apache.commons:commons-csv:1.9.0")
-    implementation("org.springdoc:springdoc-openapi-ui:1.6.14")
-    implementation("org.springdoc:springdoc-openapi-kotlin:1.6.14")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
-    runtimeOnly("com.h2database:h2")
-    implementation("org.springframework.data:spring-data-relational:2.4.5")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation ("org.springframework.security:spring-security-test")
+	implementation("org.springframework.boot:spring-boot-starter-security:2.2.5.RELEASE")
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.apache.commons:commons-csv:1.9.0")
+	implementation("org.springdoc:springdoc-openapi-ui:1.6.14")
+	implementation("org.springdoc:springdoc-openapi-kotlin:1.6.14")
+	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	runtimeOnly("com.h2database:h2")
+	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
-    }
+kotlin {
+	compilerOptions {
+		freeCompilerArgs.addAll("-Xjsr305=strict")
+	}
+}
+
+allOpen {
+	annotation("jakarta.persistence.Entity")
+	annotation("jakarta.persistence.MappedSuperclass")
+	annotation("jakarta.persistence.Embeddable")
 }
 
 tasks.withType<Test> {
-    useJUnitPlatform()
+	useJUnitPlatform()
 }

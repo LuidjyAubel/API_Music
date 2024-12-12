@@ -1,4 +1,4 @@
-package fr.aubel.music
+package fr.aubel.metallium
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.info.Info
@@ -7,11 +7,11 @@ import org.springframework.boot.runApplication
 
 @SpringBootApplication
 @OpenAPIDefinition(info = Info(
-	title="API music",
+	title="Metallium API",
 	version = "1.0.0")
 )
-class MusicApiApplication
+class MetalliumApplication
 
 fun main(args: Array<String>) {
-    runApplication<MusicApiApplication>(*args)
+	runApplication<MetalliumApplication>(*args)
 }

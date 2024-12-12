@@ -1,8 +1,7 @@
-package fr.aubel.music.web
+package fr.aubel.metallium.Web
 
-import fr.aubel.music.dao.MemberDao
-import fr.aubel.music.models.Genre
-import fr.aubel.music.models.Member
+import fr.aubel.metallium.Dao.GroupeDao
+import fr.aubel.metallium.Model.Groupe
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -15,31 +14,31 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
-@RequestMapping("/member")
-class MemberController {
+@RequestMapping("/api/groupe")
+class GroupeController {
     @Autowired
-    private lateinit var memberDao: MemberDao
+    private lateinit var groupeDao: GroupeDao
 
-    @Operation(summary = "Method get all member")
+    @Operation(summary = "Method get all groupe")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",
             content = [
                 Content(mediaType = "application/json",
-                    schema = Schema(implementation = Genre::class)
+                    schema = Schema(implementation = Groupe::class)
                 )
             ])
     )
     @GetMapping
-    fun index(): List<Member> = memberDao.findAll()
+    fun index() : List<Groupe> = groupeDao.findAll()
 
-    @Operation(summary = "Method get a member with the id of the genre")
+    @Operation(summary = "Method get an groupe with the id")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",
             content = [
                 Content(mediaType = "application/json",
-                    schema = Schema(implementation = Member::class)
+                    schema = Schema(implementation = Groupe::class)
                 )
             ]),
         ApiResponse(responseCode = "404",
@@ -47,24 +46,26 @@ class MemberController {
             content = [
                 Content(mediaType = "application/json",
                     schema = Schema(type = "object",
-                        example = "{\"member\":\"not found\"}" )
+                        example = "{\"groupe\":\"not found\"}" )
                 )])
     )
     @GetMapping("/{id}")
     fun index(@PathVariable id: String): ResponseEntity<Any> {
-        var m = memberDao.findById(id)
-        if (m==null)
-            return ResponseEntity(hashMapOf<String,String>(Pair("member","not found")), HttpStatus.NOT_FOUND)
-        return ResponseEntity.ok(m)
+        val resgroupe = groupeDao.findById(id)
+        return if (resgroupe == null) {
+            ResponseEntity(hashMapOf(Pair("groupe", "not found")), HttpStatus.NOT_FOUND)
+        } else {
+            ResponseEntity.ok(resgroupe)
+        }
     }
 
-    @Operation(summary = "Method for creating a member")
+    @Operation(summary = "Method for creating a groupe")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",
             content = [
                 Content(mediaType = "application/json",
-                    schema = Schema(implementation = Member::class)
+                    schema = Schema(implementation = Groupe::class)
                 )
             ]),
         ApiResponse(responseCode = "400",
@@ -72,36 +73,46 @@ class MemberController {
             content = [
                 Content(mediaType = "application/json",
                     schema = Schema(type = "object",
-                        example = "{\"member\":\"bad request\"}" )
+                        example = "{\"groupe\":\"bad request\"}" )
                 )]),
         ApiResponse(responseCode = "304",
             description = "Not Modified",
             content = [
                 Content(mediaType = "application/json",
                     schema = Schema(type = "object",
-                        example = "{\"member\":\"not created\"}" )
+                        example = "{\"groupe\":\"not created\"}" )
+                )]),
+        ApiResponse(responseCode = "404",
+            description = "Not Found",
+            content = [
+                Content(mediaType = "application/json",
+                    schema = Schema(type = "object",
+                        example = "{\"groupe\":\"not found\"}" )
                 )])
     )
     @PostMapping
-    fun post(@RequestBody(required = false) g: Member?) : ResponseEntity<Any>{
-        if (g== null)
-            return  ResponseEntity(hashMapOf<String,String>(Pair("member","bad request")), HttpStatus.BAD_REQUEST)
+    fun post(@RequestBody(required = false) p: Groupe?) : ResponseEntity<Any> {
+        if (p== null)
+            return  ResponseEntity(hashMapOf<String,String>(Pair("groupe","bad request")), HttpStatus.BAD_REQUEST)
         try {
-            memberDao.save(g)
+            groupeDao.save(p)
         } catch (e : Exception) {
             return ResponseEntity(hashMapOf<String,String>(Pair("groupe","not created")), HttpStatus.NOT_MODIFIED)
         }
-        var resultMember = g.Id?.let { memberDao.findById(it) }
-        return ResponseEntity.ok(resultMember)
+
+        var resGroupe = p.id?.let { groupeDao.findById(it) }
+        if (resGroupe==null)
+            return ResponseEntity(hashMapOf<String,String>(Pair("groupe","not found")), HttpStatus.NOT_FOUND)
+        return ResponseEntity.ok(resGroupe)
     }
 
-    @Operation(summary = "Method for delete a member with the id")
+    @Operation(summary = "Method update an groupe with his id")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",
             content = [
                 Content(mediaType = "application/json",
-                    schema = Schema(implementation = Member::class)
+                    schema = Schema(implementation = Groupe::class)
                 )
             ]),
         ApiResponse(responseCode = "404",
@@ -109,43 +120,44 @@ class MemberController {
             content = [
                 Content(mediaType = "application/json",
                     schema = Schema(type = "object",
-                        example = "{\"member\":\"not found\"}" )
+                        example = "{\"groupe\":\"not found\"}" )
+                )])
+    )
+    @PutMapping("/{id}")
+    fun update(@PathVariable id: String,@RequestBody data:Groupe): ResponseEntity<Any>{
+
+        var resGroupe = groupeDao.findById(id)
+        if (resGroupe.isEmpty)
+            return ResponseEntity(hashMapOf<String,String>(Pair("groupe","not found")), HttpStatus.NOT_FOUND)
+        resGroupe = Optional.of(data)
+        groupeDao.save(resGroupe.get())
+
+        return ResponseEntity.ok(data)
+    }
+
+    @Operation(summary = "Method delete a groupe with his id")
+    @ApiResponses(
+        ApiResponse(responseCode = "200",
+            description = "OK",
+            content = [
+                Content(mediaType = "application/json",
+                    schema = Schema(implementation = Groupe::class)
+                )
+            ]),
+        ApiResponse(responseCode = "404",
+            description = "Not Found",
+            content = [
+                Content(mediaType = "application/json",
+                    schema = Schema(type = "object",
+                        example = "{\"Groupe\":\"not found\"}" )
                 )])
     )
     @DeleteMapping(value = ["/{id}"])
     fun delete(@PathVariable id: String):ResponseEntity<Any> {
-        var resultMember = memberDao.findById(id)
-        if (resultMember.isEmpty)
-            return ResponseEntity(hashMapOf<String,String>(Pair("member","not found")), HttpStatus.NOT_FOUND)
-        memberDao.deleteById(id)
-        return ResponseEntity.ok(resultMember)
-    }
-
-    @Operation(summary = "Method for update the member with an id")
-    @ApiResponses(
-        ApiResponse(responseCode = "200",
-            description = "OK",
-            content = [
-                Content(mediaType = "application/json",
-                    schema = Schema(implementation = Member::class)
-                )
-            ]),
-        ApiResponse(responseCode = "404",
-            description = "Not Found",
-            content = [
-                Content(mediaType = "application/json",
-                    schema = Schema(type = "object",
-                        example = "{\"member\":\"not found\"}" )
-                )])
-    )
-    @PutMapping("/{id}")
-    fun update(@PathVariable id: String,@RequestBody data:Member): ResponseEntity<Any>{
-
-        var resultMember = memberDao.findById(id)
-        if (resultMember.isEmpty)
-            return ResponseEntity(hashMapOf<String,String>(Pair("member","not found")), HttpStatus.NOT_FOUND)
-        resultMember = Optional.of(data)
-        memberDao.save(resultMember.get())
-        return ResponseEntity.ok(data)
+        var resultatgroupe = groupeDao.findById(id)
+        if (resultatgroupe.isEmpty)
+            return ResponseEntity(hashMapOf<String,String>(Pair("groupe","not found")), HttpStatus.NOT_FOUND)
+        groupeDao.deleteById(id)
+        return ResponseEntity.ok(resultatgroupe)
     }
 }

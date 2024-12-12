@@ -1,4 +1,4 @@
-package fr.aubel.music.config
+package fr.aubel.metallium.Config
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.CorsRegistry

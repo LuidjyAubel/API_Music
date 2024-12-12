@@ -1,0 +1,24 @@
+### ajout test d'un groupe
+POST http://localhost:8080/api/groupe
+content-type: application/json
+
+{
+  "id": "1",
+  "name": "Judas Priest"
+}
+
+### get the groupe with the id 1
+GET http://localhost:8080/api/groupe/1
+
+### ajout test d'un groupe
+POST http://localhost:8080/api/groupe
+content-type: application/json
+
+{
+  "id": "2",
+  "name": "Sortilège"
+}
+
+### get all Groupe
+GET http://localhost:8080/api/groupe
+Accept: application/json
