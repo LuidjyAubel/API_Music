@@ -2,6 +2,13 @@
 
 An api for a personnal project
 
+## Documentation
+
+This Api as swagger so use :
+
+exemple : http://localhost:8080/swagger-ui/index.html
+
+## Routes
 Route User :
 - get /api/users/
 - get /api/users/{id}

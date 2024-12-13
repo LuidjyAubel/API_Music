@@ -39,10 +39,11 @@ class SecurityConfig {
                     .requestMatchers("/api/genre/**").permitAll()
                     .requestMatchers("/api/groupe/**").permitAll()
                     .requestMatchers("/api/version/**").permitAll()
+                    .requestMatchers("/swagger-ui/**").permitAll()
                     .anyRequest().authenticated()
             }
             .csrf { csrf ->
-                csrf.ignoringRequestMatchers("/h2-console/**", "/api/**")
+                csrf.ignoringRequestMatchers("/h2-console/**", "/api/**","/swagger-ui/**")
             }
             .headers { headers ->
                 headers.frameOptions { it.sameOrigin() }

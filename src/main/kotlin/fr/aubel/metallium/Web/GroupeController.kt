@@ -32,7 +32,7 @@ class GroupeController {
     @GetMapping
     fun index() : List<Groupe> = groupeDao.findAll()
 
-    @Operation(summary = "Method get an groupe with the id")
+    @Operation(summary = "Method get a groupe with the id")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",
@@ -106,7 +106,7 @@ class GroupeController {
         return ResponseEntity.ok(resGroupe)
     }
 
-    @Operation(summary = "Method update an groupe with his id")
+    @Operation(summary = "Method update a groupe with his id")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",

@@ -32,7 +32,7 @@ class GenreController {
     @GetMapping
     fun index() : List<Genre> = genreDao.findAll()
 
-    @Operation(summary = "Method get an genre with the id")
+    @Operation(summary = "Method get a genre with the id")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",
@@ -106,7 +106,7 @@ class GenreController {
         return ResponseEntity.ok(resGenre)
     }
 
-    @Operation(summary = "Method update an genre with his id")
+    @Operation(summary = "Method update a genre with his id")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",

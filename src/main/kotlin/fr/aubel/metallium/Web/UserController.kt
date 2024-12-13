@@ -149,7 +149,7 @@ class UserController {
         return ResponseEntity.ok(data)
     }
 
-    @Operation(summary = "Method get the album of a user with his id")
+    @Operation(summary = "Method get the album of an user with his id")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",

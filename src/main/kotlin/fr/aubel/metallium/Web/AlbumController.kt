@@ -79,7 +79,7 @@ class AlbumController {
         }
     }
 
-    @Operation(summary = "Method for creating a album")
+    @Operation(summary = "Method for creating an album")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",
@@ -155,7 +155,7 @@ class AlbumController {
         return ResponseEntity.ok(data)
     }
 
-    @Operation(summary = "Method delete a album with his id")
+    @Operation(summary = "Method delete an album with his id")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",

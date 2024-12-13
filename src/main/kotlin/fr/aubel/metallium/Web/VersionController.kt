@@ -34,7 +34,7 @@ class VersionController {
     @GetMapping
     fun index() : List<Version> = versionDao.findAll()
 
-    @Operation(summary = "Method get an version with the id")
+    @Operation(summary = "Method get a version with the id")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",
@@ -107,7 +107,7 @@ class VersionController {
         return ResponseEntity.ok(resVersion)
     }
 
-    @Operation(summary = "Method update an version with his id")
+    @Operation(summary = "Method update a version with his id")
     @ApiResponses(
         ApiResponse(responseCode = "200",
             description = "OK",
