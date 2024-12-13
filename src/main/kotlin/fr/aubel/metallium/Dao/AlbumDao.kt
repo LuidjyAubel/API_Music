@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface AlbumDao : JpaRepository<Album, String> {
-    fun findByAlbumId(id: String): Album?
+    fun findByName(name: String): List<Album>?
 }

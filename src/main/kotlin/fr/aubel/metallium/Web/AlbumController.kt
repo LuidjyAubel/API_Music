@@ -3,11 +3,13 @@ package fr.aubel.metallium.Web
 import fr.aubel.metallium.Dao.AlbumDao
 import fr.aubel.metallium.Model.Album
 import fr.aubel.metallium.Model.Genre
+import fr.aubel.metallium.Model.User
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.hibernate.Hibernate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -34,7 +36,13 @@ class AlbumController {
         )
     )
     @GetMapping
-    fun index(): List<Album> = albumDao.findAll()
+    fun index(): List<Album>{
+        val versions = albumDao.findAll()
+        versions.forEach { v ->
+            Hibernate.initialize(v.version)
+        }
+        return versions
+    }
 
     @Operation(summary = "Method get an album with the id")
     @ApiResponses(
