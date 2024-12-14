@@ -10,6 +10,9 @@ data class Album(
     @ManyToOne
     @JoinColumn(name = "groupe_id", referencedColumnName = "id")
     var groupe: Groupe,
+    @ManyToOne
+    @JoinColumn(name = "genre_id", referencedColumnName = "id")
+    var genre: Genre,
     var release: String,
     @OneToMany(fetch = FetchType.EAGER)
 @JoinTable(

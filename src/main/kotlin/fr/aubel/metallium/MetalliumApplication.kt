@@ -8,7 +8,7 @@ import org.springframework.boot.runApplication
 @SpringBootApplication
 @OpenAPIDefinition(info = Info(
 	title="Metallium API",
-	version = "1.0.0")
+	version = "1.2.0")
 )
 class MetalliumApplication
 
