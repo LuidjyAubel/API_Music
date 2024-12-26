@@ -5,6 +5,7 @@ import jakarta.persistence.*
 @Entity
 data class Genre(
     @Id
-    var id: String,
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0,
     var name: String
 )

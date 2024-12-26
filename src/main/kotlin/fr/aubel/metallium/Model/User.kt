@@ -6,12 +6,13 @@ import jakarta.persistence.*
 @Table(name = "app_user")  // Remplacez 'user' par un autre nom vcar User mot clé SQL
 data class User(
     @Id
-    var id: String,
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0,
     var username: String,
     var picture : String,
     var email: String,
     var password: String,
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "user_albums", // Table de jointure
         joinColumns = [JoinColumn(name = "user_id")], // Colonne pour l'ID de l'utilisateur

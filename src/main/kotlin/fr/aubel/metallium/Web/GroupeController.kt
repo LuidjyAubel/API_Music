@@ -50,7 +50,7 @@ class GroupeController {
                 )])
     )
     @GetMapping("/{id}")
-    fun index(@PathVariable id: String): ResponseEntity<Any> {
+    fun index(@PathVariable id: Long): ResponseEntity<Any> {
         val resgroupe = groupeDao.findById(id)
         return if (resgroupe == null) {
             ResponseEntity(hashMapOf(Pair("groupe", "not found")), HttpStatus.NOT_FOUND)
@@ -124,7 +124,7 @@ class GroupeController {
                 )])
     )
     @PutMapping("/{id}")
-    fun update(@PathVariable id: String,@RequestBody data:Groupe): ResponseEntity<Any>{
+    fun update(@PathVariable id: Long,@RequestBody data:Groupe): ResponseEntity<Any>{
 
         var resGroupe = groupeDao.findById(id)
         if (resGroupe.isEmpty)
@@ -153,7 +153,7 @@ class GroupeController {
                 )])
     )
     @DeleteMapping(value = ["/{id}"])
-    fun delete(@PathVariable id: String):ResponseEntity<Any> {
+    fun delete(@PathVariable id: Long):ResponseEntity<Any> {
         var resultatgroupe = groupeDao.findById(id)
         if (resultatgroupe.isEmpty)
             return ResponseEntity(hashMapOf<String,String>(Pair("groupe","not found")), HttpStatus.NOT_FOUND)

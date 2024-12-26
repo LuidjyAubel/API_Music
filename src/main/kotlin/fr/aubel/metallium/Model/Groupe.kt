@@ -5,6 +5,7 @@ import jakarta.persistence.*
 @Entity
 data class Groupe(
     @Id
-    var id: String,
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0,
     var name: String
 )

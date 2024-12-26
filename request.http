@@ -4,7 +4,6 @@ content-type: application/json
 Authorization: Basic YWRtaW46YWRtaW4=
 
 {
-  "id": "1",
   "name": "Judas Priest"
 }
 
@@ -19,7 +18,6 @@ content-type: application/json
 Authorization: Basic YWRtaW46YWRtaW4=
 
 {
-  "id": "2",
   "name": "Sortilège"
 }
 
@@ -34,7 +32,6 @@ content-type: application/json
 Authorization: Basic YWRtaW46YWRtaW4=
 
 {
-  "id": "1",
   "name": "CD"
 }
 
@@ -49,7 +46,6 @@ content-type: application/json
 Authorization: Basic YWRtaW46YWRtaW4=
 
 {
-  "id": "2",
   "name": "vinyl"
 }
 
@@ -64,7 +60,6 @@ content-type: application/json
 Authorization: Basic YWRtaW46YWRtaW4=
 
 {
-  "id": "1",
   "name": "Metal"
 }
 
@@ -79,7 +74,6 @@ content-type: application/json
 Authorization: Basic YWRtaW46YWRtaW4=
 
 {
-  "id": "2",
   "name": "Rock"
 }
 
@@ -92,20 +86,6 @@ Authorization: Basic YWRtaW46YWRtaW4=
 GET http://localhost:8080/api/users
 Authorization: Basic YWRtaW46YWRtaW4=
 Content-Type: application/json
-
-### add user with id 1
-POST http://localhost:8080/api/users
-content-type: application/json
-Authorization: Basic YWRtaW46YWRtaW4= // base64 de admin:admin
-
-{
-  "id": "2",
-  "username": "Angel",
-  "email": "luidjy.aubel@gmail.com",
-  "picture": "#",
-  "password": "admin",
-  "role": "ADMIN"
-}
 
 ### get with the user 2
 GET http://localhost:8080/api/users
@@ -123,19 +103,18 @@ Authorization: QW5nZWw6YWRtaW4=
 Content-Type: application/json
 
 {
-  "id": "1",
   "name": "Painkiller",
   "groupe": {
-    "id": "1",
+    "id": 1,
     "name": "Judas Priest"
   },
   "genre": {
-    "id": "1",
+    "id": 1,
     "name": "Metal"
   },
   "release": "1990",
   "version": [{
-    "id": "1",
+    "id": 1,
     "name": "CD"
   }]
 }
@@ -146,32 +125,178 @@ content-type: application/json
 Authorization: Basic YWRtaW46YWRtaW4= // base64 de admin:admin
 
 {
-  "id": "3",
   "username": "Glenn Tipton",
   "email": "glenn.tipton@jmail.com",
   "picture": "#",
   "password": "admin",
   "albums": [{
-    "id": "1",
+    "id": 1,
     "name": "Painkiller",
     "groupe": {
-      "id": "1",
+      "id": 1,
       "name": "Judas Priest"
     },
     "genre": {
-      "id": "1",
+      "id": 1,
       "name": "Metal"
     },
     "release": "1990",
     "version": [{
-      "id": "1",
+      "id": 1,
       "name": "CD"
     }]
   }],
   "role": "ADMIN"
 }
 
-###
-GET http://localhost:8080/api/users/3/album
+### add album 2
+POST http://localhost:8080/api/albums
+Authorization: QW5nZWw6YWRtaW4=
+Content-Type: application/json
+
+{
+  "name": "Firepower",
+  "groupe": {
+    "id": 1,
+    "name": "Judas Priest"
+  },
+  "genre": {
+    "id": 1,
+    "name": "Metal"
+  },
+  "release": "2018",
+  "version": [{
+    "id": 1,
+    "name": "CD"
+  }]
+}
+
+
+
+### add a genre with id 3
+POST http://localhost:8080/api/genre
+content-type: application/json
+Authorization: Basic YWRtaW46YWRtaW4=
+
+{
+  "name": "Blues"
+}
+
+### add album 2
+POST http://localhost:8080/api/albums
+Authorization: QW5nZWw6YWRtaW4=
+Content-Type: application/json
+
+{
+  "name": "Phoenix",
+  "groupe": {
+    "id": 2,
+    "name": "Sortilège"
+  },
+  "genre": {
+    "id": 1,
+    "name": "Metal"
+  },
+  "release": "2021",
+  "version": [{
+    "id": 1,
+    "name": "CD"
+  }]
+}
+
+### adding user with id 2
+POST http://localhost:8080/api/users
 content-type: application/json
 Authorization: Basic YWRtaW46YWRtaW4= // base64 de admin:admin
+
+{
+  "username": "Angel",
+  "email": "angel@jmail.com",
+  "picture": "#",
+  "password": "admin",
+  "albums": [{
+    "id": 1,
+    "name": "Painkiller",
+    "groupe": {
+      "id": 1,
+      "name": "Judas Priest"
+    },
+    "genre": {
+      "id": 1,
+      "name": "Metal"
+    },
+    "release": "1990",
+    "version": [{
+      "id": 1,
+      "name": "CD"
+    }]
+  },
+    {
+      "id": 3,
+      "name": "Phoenix",
+      "groupe": {
+        "id": 2,
+        "name": "Sortilège"
+      },
+      "genre": {
+        "id": 1,
+        "name": "Metal"
+      },
+      "release": "2021",
+      "version": [{
+        "id": 1,
+        "name": "CD"
+      }]
+    }],
+  "role": "ADMIN"
+}
+
+
+### For testing deleting with application js
+POST http://localhost:8080/api/genre
+content-type: application/json
+Authorization: Basic YWRtaW46YWRtaW4=
+
+{
+  "name": "Jazz"
+}
+
+### ajout test d'un groupe
+POST http://localhost:8080/api/groupe
+content-type: application/json
+Authorization: Basic YWRtaW46YWRtaW4=
+
+{
+  "name": "Children of Mayhem"
+}
+
+### adding version
+POST http://localhost:8080/api/version
+content-type: application/json
+Authorization: Basic YWRtaW46YWRtaW4=
+
+{
+  "name": "Picture Disk"
+}
+
+### add album
+POST http://localhost:8080/api/albums
+Authorization: QW5nZWw6YWRtaW4=
+Content-Type: application/json
+
+{
+  "name": "Begining",
+  "groupe": {
+    "id": 3,
+    "name": "Children of Mayhem"
+  },
+  "genre": {
+    "id": 1,
+    "name": "Metal"
+  },
+  "release": "Coming Soon",
+  "version": [{
+    "id": 1,
+    "name": "CD"
+  }]
+}

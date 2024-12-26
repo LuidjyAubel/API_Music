@@ -70,7 +70,7 @@ class AlbumController {
         )
     )
     @GetMapping("/{id}")
-    fun index(@PathVariable id: String): ResponseEntity<Any> {
+    fun index(@PathVariable id: Long): ResponseEntity<Any> {
         val resAlbum = albumDao.findById(id)
         return if (resAlbum == null) {
             ResponseEntity(hashMapOf(Pair("album", "not found")), HttpStatus.NOT_FOUND)
@@ -144,7 +144,7 @@ class AlbumController {
                 )])
     )
     @PutMapping("/{id}")
-    fun update(@PathVariable id: String,@RequestBody data:Album): ResponseEntity<Any>{
+    fun update(@PathVariable id: Long,@RequestBody data:Album): ResponseEntity<Any>{
 
         var resAlbum = albumDao.findById(id)
         if (resAlbum.isEmpty)
@@ -173,7 +173,7 @@ class AlbumController {
                 )])
     )
     @DeleteMapping(value = ["/{id}"])
-    fun delete(@PathVariable id: String):ResponseEntity<Any> {
+    fun delete(@PathVariable id: Long):ResponseEntity<Any> {
         var resultatAlbum = albumDao.findById(id)
         if (resultatAlbum.isEmpty)
             return ResponseEntity(hashMapOf<String,String>(Pair("album","not found")), HttpStatus.NOT_FOUND)

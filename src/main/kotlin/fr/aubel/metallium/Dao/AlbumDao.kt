@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface AlbumDao : JpaRepository<Album, String> {
+interface AlbumDao : JpaRepository<Album, Long> {
     fun findByName(name: String): List<Album>?
 }

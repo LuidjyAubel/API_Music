@@ -52,7 +52,7 @@ class VersionController {
                 )])
     )
     @GetMapping("/{id}")
-    fun index(@PathVariable id: String): ResponseEntity<Any> {
+    fun index(@PathVariable id: Long): ResponseEntity<Any> {
         val resVersion = versionDao.findById(id)
         return if (resVersion == null) {
             ResponseEntity(hashMapOf(Pair("version", "not found")), HttpStatus.NOT_FOUND)
@@ -125,7 +125,7 @@ class VersionController {
                 )])
     )
     @PutMapping("/{id}")
-    fun update(@PathVariable id: String,@RequestBody data:Version): ResponseEntity<Any>{
+    fun update(@PathVariable id: Long,@RequestBody data:Version): ResponseEntity<Any>{
 
         var resVersion = versionDao.findById(id)
         if (resVersion.isEmpty)
@@ -154,7 +154,7 @@ class VersionController {
                 )])
     )
     @DeleteMapping(value = ["/{id}"])
-    fun delete(@PathVariable id: String):ResponseEntity<Any> {
+    fun delete(@PathVariable id: Long):ResponseEntity<Any> {
         var resultatversion = versionDao.findById(id)
         if (resultatversion.isEmpty)
             return ResponseEntity(hashMapOf<String,String>(Pair("version","not found")), HttpStatus.NOT_FOUND)

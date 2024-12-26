@@ -50,7 +50,7 @@ class GenreController {
                 )])
     )
     @GetMapping("/{id}")
-    fun index(@PathVariable id: String): ResponseEntity<Any> {
+    fun index(@PathVariable id: Long): ResponseEntity<Any> {
         val resgenre = genreDao.findById(id)
         return if (resgenre == null) {
             ResponseEntity(hashMapOf(Pair("genre", "not found")), HttpStatus.NOT_FOUND)
@@ -124,7 +124,7 @@ class GenreController {
                 )])
     )
     @PutMapping("/{id}")
-    fun update(@PathVariable id: String,@RequestBody data:Genre): ResponseEntity<Any>{
+    fun update(@PathVariable id: Long,@RequestBody data:Genre): ResponseEntity<Any>{
 
         var resGenre = genreDao.findById(id)
         if (resGenre.isEmpty)
@@ -152,7 +152,7 @@ class GenreController {
                 )])
     )
     @DeleteMapping(value = ["/{id}"])
-    fun delete(@PathVariable id: String):ResponseEntity<Any> {
+    fun delete(@PathVariable id: Long):ResponseEntity<Any> {
         var resultatgenre = genreDao.findById(id)
         if (resultatgenre.isEmpty)
             return ResponseEntity(hashMapOf<String,String>(Pair("genre","not found")), HttpStatus.NOT_FOUND)

@@ -64,7 +64,7 @@ class UserController {
                 )])
     )
     @GetMapping("/{id}")
-    fun index(@PathVariable id: String): ResponseEntity<Any> {
+    fun index(@PathVariable id: Long): ResponseEntity<Any> {
         val resUser = userDao.findById(id)
         return if (resUser == null) {
             ResponseEntity(hashMapOf(Pair("user", "not found")), HttpStatus.NOT_FOUND)
@@ -138,7 +138,7 @@ class UserController {
                 )])
     )
     @PutMapping("/{id}")
-    fun update(@PathVariable id: String,@RequestBody data:User): ResponseEntity<Any>{
+    fun update(@PathVariable id: Long,@RequestBody data:User): ResponseEntity<Any>{
 
         var resUser = userDao.findById(id)
         if (resUser.isEmpty)
@@ -167,7 +167,7 @@ class UserController {
                 )])
     )
     @GetMapping("/{id}/album")
-    fun getAlbumUser(@PathVariable id: String): ResponseEntity<Any> {
+    fun getAlbumUser(@PathVariable id: Long): ResponseEntity<Any> {
         var p =userDao.findById(id)
         val albums : MutableList<Album> = mutableListOf()
         if (p==null)
@@ -201,7 +201,7 @@ class UserController {
                 )])
     )
     @DeleteMapping(value = ["/{id}"])
-    fun delete(@PathVariable id: String):ResponseEntity<Any> {
+    fun delete(@PathVariable id: Long):ResponseEntity<Any> {
         var resUser = userDao.findById(id)
         if (resUser.isEmpty)
             return ResponseEntity(hashMapOf<String,String>(Pair("user","not found")), HttpStatus.NOT_FOUND)

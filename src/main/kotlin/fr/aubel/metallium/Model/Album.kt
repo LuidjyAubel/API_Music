@@ -2,10 +2,13 @@ package fr.aubel.metallium.Model
 
 import jakarta.persistence.*
 
+
+// Add auto increment to id
 @Entity
 data class Album(
     @Id
-    var id: String,
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0,
     var name: String,
     @ManyToOne
     @JoinColumn(name = "groupe_id", referencedColumnName = "id")
@@ -14,11 +17,11 @@ data class Album(
     @JoinColumn(name = "genre_id", referencedColumnName = "id")
     var genre: Genre,
     var release: String,
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
 @JoinTable(
     name = "version_album", // Table de jointure
     joinColumns = [JoinColumn(name = "album_id")],
-    inverseJoinColumns = [JoinColumn(name = "version_id")]
+    inverseJoinColumns = [JoinColumn(name = "version_id")],
 )
 var version: MutableList<Version> = mutableListOf()
 ){

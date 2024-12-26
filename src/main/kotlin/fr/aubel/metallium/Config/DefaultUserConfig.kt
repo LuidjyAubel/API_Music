@@ -18,7 +18,6 @@ class DefaultUserConfig {
             if (existingUser == null) {
                 // Créer un utilisateur par défaut
                 val defaultUser = User(
-                    id = "1",
                     username = "admin",
                     email = "admin@jmail.com",
                     picture = "#",
