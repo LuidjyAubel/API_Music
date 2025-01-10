@@ -129,10 +129,10 @@ class GenreController {
         var resGenre = genreDao.findById(id)
         if (resGenre.isEmpty)
             return ResponseEntity(hashMapOf<String,String>(Pair("Genre","not found")), HttpStatus.NOT_FOUND)
-        resGenre = Optional.of(data)
-        genreDao.save(resGenre.get())
-
-        return ResponseEntity.ok(data)
+        val upGenre = resGenre.get()
+        upGenre.name = data.name
+        genreDao.save(upGenre)
+        return ResponseEntity.ok(resGenre)
     }
     @Operation(summary = "Method delete a genre with his id")
     @ApiResponses(

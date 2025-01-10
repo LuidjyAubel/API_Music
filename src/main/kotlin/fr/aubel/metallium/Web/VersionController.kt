@@ -126,14 +126,15 @@ class VersionController {
     )
     @PutMapping("/{id}")
     fun update(@PathVariable id: Long,@RequestBody data:Version): ResponseEntity<Any>{
-
-        var resVersion = versionDao.findById(id)
-        if (resVersion.isEmpty)
+        val existingVersionOpt = versionDao.findById(id)
+        if (existingVersionOpt.isEmpty) {
             return ResponseEntity(hashMapOf<String,String>(Pair("version","not found")), HttpStatus.NOT_FOUND)
-        resVersion = Optional.of(data)
-        versionDao.save(resVersion.get())
+        }
+        val existingVersion = existingVersionOpt.get()
+        existingVersion.name = data.name // Mise à jour des champs
+        versionDao.save(existingVersion)
 
-        return ResponseEntity.ok(data)
+        return ResponseEntity.ok(existingVersion)
     }
 
     @Operation(summary = "Method delete a version with his id")

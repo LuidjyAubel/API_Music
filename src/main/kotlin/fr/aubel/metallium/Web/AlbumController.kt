@@ -149,10 +149,10 @@ class AlbumController {
         var resAlbum = albumDao.findById(id)
         if (resAlbum.isEmpty)
             return ResponseEntity(hashMapOf<String,String>(Pair("album","not found")), HttpStatus.NOT_FOUND)
-        resAlbum = Optional.of(data)
-        albumDao.save(resAlbum.get())
-
-        return ResponseEntity.ok(data)
+        val upAlbum = resAlbum.get()
+        upAlbum.name = data.name
+        albumDao.save(upAlbum)
+        return ResponseEntity.ok(resAlbum)
     }
 
     @Operation(summary = "Method delete an album with his id")

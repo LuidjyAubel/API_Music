@@ -139,14 +139,16 @@ class UserController {
     )
     @PutMapping("/{id}")
     fun update(@PathVariable id: Long,@RequestBody data:User): ResponseEntity<Any>{
-
         var resUser = userDao.findById(id)
         if (resUser.isEmpty)
             return ResponseEntity(hashMapOf<String,String>(Pair("user","not found")), HttpStatus.NOT_FOUND)
-        resUser = Optional.of(data)
-        userDao.save(resUser.get())
-
-        return ResponseEntity.ok(data)
+        val upUser = resUser.get()
+        upUser.username = data.username
+        upUser.email = data.email
+        upUser.role = data.role
+        upUser.password = passwordEncoder.encode(data.password)
+        userDao.save(upUser)
+        return ResponseEntity.ok(upUser)
     }
 
     @Operation(summary = "Method get the album of an user with his id")
@@ -207,5 +209,47 @@ class UserController {
             return ResponseEntity(hashMapOf<String,String>(Pair("user","not found")), HttpStatus.NOT_FOUND)
         userDao.deleteById(id)
         return ResponseEntity.ok(resUser)
+    }
+
+    @Operation(summary = "Method for adding an album to an user")
+    @ApiResponses(
+        ApiResponse(responseCode = "200",
+            description = "OK",
+            content = [
+                Content(mediaType = "application/json",
+                    schema = Schema(implementation = User::class)
+                )
+            ]),
+        ApiResponse(responseCode = "400",
+            description = "Bad Request",
+            content = [
+                Content(mediaType = "application/json",
+                    schema = Schema(type = "object",
+                        example = "{\"user\":\"bad request\"}" )
+                )]),
+        ApiResponse(responseCode = "304",
+            description = "Not Modified",
+            content = [
+                Content(mediaType = "application/json",
+                    schema = Schema(type = "object",
+                        example = "{\"user\":\"not created\"}" )
+                )]),
+        ApiResponse(responseCode = "404",
+            description = "Not Found",
+            content = [
+                Content(mediaType = "application/json",
+                    schema = Schema(type = "object",
+                        example = "{\"user\":\"not found\"}" )
+                )])
+    )
+    @PostMapping("/{id}/album")
+    fun addAlbumUser(@PathVariable id: Long, @RequestBody data: Album): ResponseEntity<Any> {
+        var resUser = userDao.findById(id)
+        if (resUser.isEmpty)
+            return ResponseEntity(hashMapOf<String,String>(Pair("user","not found")), HttpStatus.NOT_FOUND)
+        val upUser = resUser.get()
+        upUser.albums.add(data)
+        userDao.save(upUser)
+        return ResponseEntity.ok(upUser)
     }
 }

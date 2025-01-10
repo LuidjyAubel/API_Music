@@ -34,6 +34,7 @@ Route User :
 - get /api/users/{id}
 - get /api/users/{id}/album
 - post /api/users/
+- post /api/users/{id}/album/
 - put /api/users/{id}
 - delete /api/users/{id}
 

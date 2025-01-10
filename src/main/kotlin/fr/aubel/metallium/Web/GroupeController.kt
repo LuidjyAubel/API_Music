@@ -129,10 +129,10 @@ class GroupeController {
         var resGroupe = groupeDao.findById(id)
         if (resGroupe.isEmpty)
             return ResponseEntity(hashMapOf<String,String>(Pair("groupe","not found")), HttpStatus.NOT_FOUND)
-        resGroupe = Optional.of(data)
-        groupeDao.save(resGroupe.get())
-
-        return ResponseEntity.ok(data)
+        val upGroupe = resGroupe.get()
+        upGroupe.name = data.name
+        groupeDao.save(upGroupe)
+        return ResponseEntity.ok(upGroupe)
     }
 
     @Operation(summary = "Method delete a groupe with his id")
