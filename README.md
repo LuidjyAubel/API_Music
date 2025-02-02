@@ -18,6 +18,8 @@ exemple : http://localhost:8080/h2-console
 
 ## Installation
 
+Make JWT_SECRET in environnement variable
+
 2 optinos :
 
 the first one is to use the war file in the target folder or in the release section of the github repository
