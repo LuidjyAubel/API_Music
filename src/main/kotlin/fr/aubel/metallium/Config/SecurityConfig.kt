@@ -38,6 +38,7 @@ class SecurityConfig(
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .cors() // Ajoutez cette ligne pour activer CORS
 
         return http.build()
     }
