@@ -1,5 +1,6 @@
 package fr.aubel.metallium.Web
 
+import fr.aubel.metallium.Dao.AlbumDao
 import fr.aubel.metallium.Dao.UserDao
 import fr.aubel.metallium.Model.Album
 import fr.aubel.metallium.Model.Groupe
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import jakarta.transaction.Transactional
 import org.hibernate.Hibernate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -22,6 +24,8 @@ import java.util.*
 class UserController {
     @Autowired
     private lateinit var userDao: UserDao
+    @Autowired
+    private lateinit var albumDao : AlbumDao
     @Autowired
     private lateinit var passwordEncoder: PasswordEncoder
 
@@ -249,6 +253,38 @@ class UserController {
             return ResponseEntity(hashMapOf<String,String>(Pair("user","not found")), HttpStatus.NOT_FOUND)
         val upUser = resUser.get()
         upUser.albums.add(data)
+        userDao.save(upUser)
+        return ResponseEntity.ok(upUser)
+    }
+    @Operation(summary = "Method delete an album with his id for an user")
+    @ApiResponses(
+        ApiResponse(responseCode = "200",
+            description = "OK",
+            content = [
+                Content(mediaType = "application/json",
+                    schema = Schema(implementation = User::class)
+                )
+            ]),
+        ApiResponse(responseCode = "404",
+            description = "Not Found",
+            content = [
+                Content(mediaType = "application/json",
+                    schema = Schema(type = "object",
+                        example = "{\"user\":\"not found\"}" )
+                )])
+    )
+    @Transactional
+    @DeleteMapping("/{id}/album/{albumId}")
+    fun deleteAlbumUser(@PathVariable id: Long, @PathVariable albumId : Long) : ResponseEntity<Any>{
+        var resUser = userDao.findById(id)
+        if (resUser.isEmpty)
+            return ResponseEntity(hashMapOf<String,String>(Pair("user","not found")), HttpStatus.NOT_FOUND)
+        val upUser = resUser.get()
+        var resAlbum = albumDao.findById(albumId)
+        if (resAlbum.isEmpty)
+            return ResponseEntity(hashMapOf<String,String>(Pair("album","not found")), HttpStatus.NOT_FOUND)
+        val upAlbum = resAlbum.get()
+        upUser.albums.remove(upAlbum)
         userDao.save(upUser)
         return ResponseEntity.ok(upUser)
     }
